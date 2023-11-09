@@ -7,6 +7,7 @@
 #include <freertos/queue.h>
 
 #include <esp_heap_caps.h>
+#include <esp32-hal-log.h>
 
 #include <noftypes.h>
 
@@ -54,7 +55,6 @@ static void displayTask(void *arg)
 	bitmap_t *bmp = NULL;
 	while (1)
 	{
-		// xQueueReceive(vidQueue, &bmp, portMAX_DELAY); //skip one frame to drop to 30
 		xQueueReceive(vidQueue, &bmp, portMAX_DELAY);
 		display_write_frame((const uint8_t **)bmp->line);
 	}
@@ -207,8 +207,7 @@ int osd_init()
 
 	display_init();
 	vidQueue = xQueueCreate(1, sizeof(bitmap_t *));
-	// xTaskCreatePinnedToCore(&displayTask, "displayTask", 2048, NULL, 5, NULL, 1);
-	xTaskCreatePinnedToCore(&displayTask, "displayTask", 2048, NULL, 0, NULL, 0);
+	xTaskCreatePinnedToCore(&displayTask, "displayTask", 2048, NULL, 5, NULL, 0);
 	osd_initinput();
 	return 0;
 }

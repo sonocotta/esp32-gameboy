@@ -24,8 +24,14 @@ extern void display_begin();
 void setup()
 {
     Serial.begin(SERIAL_BAUD);
+    Serial.setDebugOutput(true);
+
+    #if defined(ARDUINO_USB_CDC_ON_BOOT) && (CORE_DEBUG_LEVEL >= ARDUHAL_LOG_LEVEL_DEBUG)
+    delay(3000);
+    #endif
 
     // turn off WiFi
+    esp_wifi_stop();
     esp_wifi_deinit();
 
     // disable Core 0 WDT
@@ -43,7 +49,7 @@ void setup()
     char *argv[1];
     if (!root)
     {
-        Serial.println("Filesystem mount failed! Please check hw_config.h settings.");
+        log_e("Filesystem mount failed! Please check hw_config.h settings.");
         gfx->println("Filesystem mount failed! Please check hw_config.h settings.");
     }
     else
@@ -66,7 +72,7 @@ void setup()
                     foundRom = true;
                     char fullFilename[256];
                     sprintf(fullFilename, "%s/%s", FSROOT, filename);
-                    Serial.println(fullFilename);
+                    log_i("Reading: %s", fullFilename);
                     argv[0] = fullFilename;
                     break;
                 }
@@ -77,13 +83,13 @@ void setup()
 
         if (!foundRom)
         {
-            Serial.println("Failed to find rom file, please copy rom file to data folder and upload with \"ESP32 Sketch Data Upload\"");
+            log_e("Failed to find rom file, please copy rom file to data folder and upload with \"ESP32 Sketch Data Upload\"");
             argv[0] = "/";
         }
 
-        Serial.println("NoFrendo start!\n");
+        log_i("NoFrendo start!");
         nofrendo_main(1, argv);
-        Serial.println("NoFrendo end!\n");
+        log_i("NoFrendo end!");
     }
 }
 
