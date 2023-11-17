@@ -42,7 +42,7 @@ extern "C" uint32_t controller_read_input()
     int joyX = analogRead(HW_CONTROLLER_GPIO_LEFT_RIGHT);
   #endif /* !defined(HW_CONTROLLER_GPIO_REVERSE_LF) */
 
-    // Serial.printf("joyX: %d, joyY: %d\n", joyX, joyY);
+  log_v("joyX: %d, joyY: %d\n", joyX, joyY);
   #if defined(ARDUINO_ODROID_ESP32)
 
     if (joyY > 2048 + 1024)
@@ -274,32 +274,28 @@ extern "C" uint32_t controller_read_input()
 
 #elif defined(HW_CONTROLLER_I2C_PCF8574)
 
-  volatile bool keyPressed = false;
-
   #include <Wire.h>
   #include "PCF8574.h"
 
-  PCF8574 pcf8574(HW_CONTROLLER_I2C_PCF8574_ADDR, HW_CONTROLLER_I2C_PCF8574_INT_PIN, []() { keyPressed = true; });
+  PCF8574 pcf8574(HW_CONTROLLER_I2C_PCF8574_ADDR/*, HW_CONTROLLER_I2C_PCF8574_INT_PIN*/);
   
   extern "C" void controller_init()
   {
-    Wire.begin();
+    pcf8574.pinMode(P0, INPUT_PULLUP);
+    pcf8574.pinMode(P1, INPUT_PULLUP);
+    pcf8574.pinMode(P2, INPUT_PULLUP);
+    pcf8574.pinMode(P3, INPUT_PULLUP);
 
-    pcf8574.pinMode(P0, INPUT);
-    pcf8574.pinMode(P1, INPUT);
-    pcf8574.pinMode(P2, INPUT);
-    pcf8574.pinMode(P3, INPUT);
+    pcf8574.pinMode(P4, INPUT_PULLUP);
+    pcf8574.pinMode(P5, INPUT_PULLUP);
+    pcf8574.pinMode(P6, INPUT_PULLUP);
+    pcf8574.pinMode(P7, INPUT_PULLUP);
 
-    pcf8574.pinMode(P4, INPUT);
-    pcf8574.pinMode(P5, INPUT);
-    pcf8574.pinMode(P6, INPUT);
-    pcf8574.pinMode(P7, INPUT);
-
-    Serial.print("Init pcf8574...");
+    log_i("Init pcf8574...");
     if (pcf8574.begin()){
-      Serial.println("OK");
+      log_i("OK");
     } else {
-      Serial.println("FAILED");
+      log_e("FAILED");
     }
   }
 
@@ -307,20 +303,18 @@ extern "C" uint32_t controller_read_input()
 
   extern "C" uint32_t controller_read_input()
   {
-    if (keyPressed) {
-      uint8_t u = pcf8574.digitalRead(P0);
-      uint8_t d = pcf8574.digitalRead(P1);
-      uint8_t l = pcf8574.digitalRead(P2);
-      uint8_t r = pcf8574.digitalRead(P3);
-      uint8_t t = pcf8574.digitalRead(P4);
-      uint8_t s = pcf8574.digitalRead(P5);
-      uint8_t b = pcf8574.digitalRead(P6);
-      uint8_t a = pcf8574.digitalRead(P7);
-      key_mask = 0xFFFFFFFF ^ ((!u << 0) | (!d << 1) | (!l << 2) | (!r << 3) | (!s << 4) | (!t << 5) | (!a << 6) | (!b << 7) /*| (!x << 8) | (!y << 9)*/);
-      
-      keyPressed= false;
-    }
+    uint8_t u = pcf8574.digitalRead(PCF8574_MAP_UP);
+    uint8_t d = pcf8574.digitalRead(PCF8574_MAP_DOWN);
+    uint8_t l = pcf8574.digitalRead(PCF8574_MAP_LEFT);
+    uint8_t r = pcf8574.digitalRead(PCF8574_MAP_RIGHT);
 
+    uint8_t t = pcf8574.digitalRead(PCF8574_MAP_START);
+    uint8_t s = pcf8574.digitalRead(PCF8574_MAP_SELECT);
+    uint8_t b = pcf8574.digitalRead(PCF8574_MAP_B);
+    uint8_t a = pcf8574.digitalRead(PCF8574_MAP_A);
+
+    key_mask = 0xFFFFFFFF ^ ((!u << 0) | (!d << 1) | (!l << 2) | (!r << 3) | (!s << 4) | (!t << 5) | (!a << 6) | (!b << 7) /*| (!x << 8) | (!y << 9)*/);
+    log_v("%#04x", key_mask);
     return key_mask;
   }
 
@@ -328,7 +322,7 @@ extern "C" uint32_t controller_read_input()
 
 extern "C" void controller_init()
 {
-  Serial.printf("GPIO controller disabled in menuconfig; no input enabled.\n");
+  log_w("GPIO controller disabled in menuconfig; no input enabled.\n");
 }
 
 extern "C" uint32_t controller_read_input()

@@ -6,6 +6,8 @@
 /* M5Stack */
 #if defined(ARDUINO_M5Stack_Core_ESP32) || defined(ARDUINO_M5STACK_FIRE)
 
+    #include <Arduino_ILI9341_M5STACK.h>
+
     // Uncomment one of below, M5Stack support SPIFFS and SD
     #define FILESYSTEM_BEGIN         \
         SPIFFS.begin(false, FSROOT); \
@@ -70,6 +72,7 @@
 
     /* buzzer audio */
     #define HW_AUDIO_BUZZER
+    #define HW_AUDIO_RESOLUTION_BITS 8
     #define HW_AUDIO_BUZZER_PIN 4
     #define HW_AUDIO_SAMPLERATE 22050 // nofrendo minimum sample rate
 
@@ -172,7 +175,7 @@
         Arduino_DataBus *bus = new Arduino_ESP32SPI(TFT_DC /* DC */, TFT_CS /* CS */, SCK, MOSI, MISO); \
         Arduino_ST7789 *gfx = new Arduino_ST7789(bus, TFT_RES /* RST */, TFT_ROTATION /* rotation */, false /* IPS */);
 
-#elif defined(HW_ESP_GAMEBOY_A)
+#elif defined(HW_ESP_GAMEBOY_B)
 
     #ifdef FS_SPIFFS
     /* FatFS */
@@ -184,17 +187,17 @@
     #endif
 
     #ifdef FS_SD_SPI
-    #define SD_CS 27
+    #define PIN_SD_CS 27
     /* SD using default SPI settings */
-    // #define FILESYSTEM_BEGIN \
-    //     SD.begin(SD_CS /* SS */, SPI, 8000000, FSROOT); \
-    //     FS filesystem = SD;
-    /* SD using custom SPI settings */
-    #define FILESYSTEM_BEGIN                \
-        SPIClass spi = SPIClass(VSPI);      \
-        spi.begin();           \
-        SD.begin(SD_CS, spi, 8000000, FSROOT); \
+    #define FILESYSTEM_BEGIN \
+        SD.begin(PIN_SD_CS, SPI, 4000000, FSROOT); \
         FS filesystem = SD;
+    /* SD using custom SPI settings */
+    // #define FILESYSTEM_BEGIN                \
+    //     SPIClass spi = SPIClass(VSPI);      \
+    //     spi.begin();           \
+    //     SD.begin(SD_CS, spi, 8000000, FSROOT); \
+    //     FS filesystem = SD;
     #endif
 
     // enable audio
@@ -205,8 +208,18 @@
     /* controller is PCF8574 I2C bus extender*/
     #define HW_CONTROLLER_I2C_PCF8574
     #define HW_CONTROLLER_I2C_PCF8574_INT_PIN 35
-    #define HW_CONTROLLER_I2C_PCF8574_ADDR 0x38
-    
+    #define HW_CONTROLLER_I2C_PCF8574_ADDR 0x20
+
+    #define PCF8574_MAP_UP      P0 
+    #define PCF8574_MAP_DOWN    P1
+    #define PCF8574_MAP_LEFT    P2
+    #define PCF8574_MAP_RIGHT   P3
+
+    #define PCF8574_MAP_START   P4
+    #define PCF8574_MAP_SELECT  P5
+    #define PCF8574_MAP_B       P6
+    #define PCF8574_MAP_A       P7
+
     //#define TFT_BRIGHTNESS 200 /* 0 - 255 */
     #define TFT_BL 2
     #define TFT_DC 4
@@ -218,6 +231,106 @@
     #define DISPLAY_INIT         \
         Arduino_DataBus *bus = new Arduino_ESP32SPI(TFT_DC /* DC */, TFT_CS /* CS */, SCK, MOSI, MISO); \
         Arduino_ILI9341 *gfx = new Arduino_ILI9341(bus, TFT_RES /* RST */, TFT_ROTATION /* rotation */, false /* IPS */);
+
+#elif defined(HW_PLAY_ESP_ESP32C3)
+
+    #ifdef FS_SPIFFS
+    /* FatFS */
+    // #define FILESYSTEM_BEGIN FFat.begin(false, FSROOT); FS filesystem = FFat;
+    /* SPIFFS */
+    #define FILESYSTEM_BEGIN         \
+        SPIFFS.begin(false, FSROOT); \
+        FS filesystem = SPIFFS;
+    #endif
+
+    /* buzzer audio */
+    #define HW_AUDIO_BUZZER
+    #define HW_AUDIO_RESOLUTION_BITS 8
+    #define HW_AUDIO_BUZZER_PIN 5
+    #define HW_AUDIO_SAMPLERATE 22050 // nofrendo minimum sample rate
+
+    /* controller is PCF8574 I2C bus extender*/
+    #define HW_CONTROLLER_I2C_PCF8574
+    #define HW_CONTROLLER_I2C_PCF8574_INT_PIN 6
+    #define HW_CONTROLLER_I2C_PCF8574_ADDR 0x20
+
+    #define PCF8574_MAP_UP      P2 
+    #define PCF8574_MAP_DOWN    P3
+    #define PCF8574_MAP_LEFT    P1
+    #define PCF8574_MAP_RIGHT   P0
+
+    #define PCF8574_MAP_START   P5
+    #define PCF8574_MAP_SELECT  P4
+    #define PCF8574_MAP_B       P6
+    #define PCF8574_MAP_A       P7
+
+    #define TFT_BRIGHTNESS 64 /* 0 - 255 */
+    #define TFT_BL 3
+    #define TFT_DC 7
+    #define TFT_CS -1
+    #define TFT_RES 1
+    #define TFT_SCK 2
+    #define TFT_MOSI 4
+    #define TFT_MISO -1
+    #define TFT_ROTATION 2
+    #define TFT_WIDTH 240
+    #define TFT_HEIGHT 240
+    #define TFT_Y_OFFSET (320 - 240) // controller has wrong more memory than it's size 
+     
+    /* Display initialisation */
+    #define DISPLAY_INIT         \
+        Arduino_DataBus *bus = new Arduino_ESP32SPI(TFT_DC /* DC */, TFT_CS /* CS */, TFT_SCK, TFT_MOSI, TFT_MISO); \
+        Arduino_ST7789 *gfx = new Arduino_ST7789(bus, TFT_RES /* RST */, TFT_ROTATION /* rotation */, true /* IPS */, TFT_WIDTH, TFT_HEIGHT);
+
+#elif defined(HW_PLAY_ESP_ESP32S2)
+
+    #ifdef FS_SPIFFS
+    /* FatFS */
+    // #define FILESYSTEM_BEGIN FFat.begin(false, FSROOT); FS filesystem = FFat;
+    /* SPIFFS */
+    #define FILESYSTEM_BEGIN         \
+        SPIFFS.begin(false, FSROOT); \
+        FS filesystem = SPIFFS;
+    #endif
+
+    /* buzzer audio */
+    #define HW_AUDIO_BUZZER
+    #define HW_AUDIO_RESOLUTION_BITS 8
+    #define HW_AUDIO_BUZZER_PIN 12
+    #define HW_AUDIO_SAMPLERATE 22050 // nofrendo minimum sample rate
+
+    /* controller is PCF8574 I2C bus extender*/
+    #define HW_CONTROLLER_I2C_PCF8574
+    #define HW_CONTROLLER_I2C_PCF8574_INT_PIN 16
+    #define HW_CONTROLLER_I2C_PCF8574_ADDR 0x20
+
+    #define PCF8574_MAP_UP      P2 
+    #define PCF8574_MAP_DOWN    P3
+    #define PCF8574_MAP_LEFT    P1
+    #define PCF8574_MAP_RIGHT   P0
+
+    #define PCF8574_MAP_START   P5
+    #define PCF8574_MAP_SELECT  P4
+    #define PCF8574_MAP_B       P6
+    #define PCF8574_MAP_A       P7
+
+    #define TFT_BRIGHTNESS 64 /* 0 - 255 */
+    #define TFT_BL 9
+    #define TFT_DC 18
+    #define TFT_CS -1
+    #define TFT_RES 5
+    #define TFT_SCK 7
+    #define TFT_MOSI 11
+    #define TFT_MISO -1
+    #define TFT_ROTATION 2
+    #define TFT_WIDTH 240
+    #define TFT_HEIGHT 240
+    #define TFT_Y_OFFSET (320 - 240) // controller has wrong more memory than it's size
+    
+    /* Display initialisation */
+    #define DISPLAY_INIT         \
+        Arduino_DataBus *bus = new Arduino_ESP32SPI(TFT_DC /* DC */, TFT_CS /* CS */, TFT_SCK, TFT_MOSI, TFT_MISO); \
+        Arduino_ST7789 *gfx = new Arduino_ST7789(bus, TFT_RES /* RST */, TFT_ROTATION /* rotation */, true /* IPS */, TFT_WIDTH, TFT_HEIGHT);
 
 #endif /* custom hardware */
 

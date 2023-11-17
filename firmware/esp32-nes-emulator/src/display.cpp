@@ -22,8 +22,9 @@ extern void display_begin()
 #ifdef TFT_BL
     // turn display backlight on
     #ifdef TFT_BRIGHTNESS
-    ledcAttachPin(TFT_BL, 1);     // assign TFT_BL pin to channel 1
+	log_d("setup LEDC: pin=%d, ch=%d, f=%d, bit=%d", TFT_BL, 1, 12000, 8);
     ledcSetup(1, 12000, 8);       // 12 kHz PWM, 8-bit resolution
+    ledcAttachPin(TFT_BL, 1);     // assign TFT_BL pin to channel 1
     ledcWrite(1, TFT_BRIGHTNESS); // brightness 0 - 255
     #else
     pinMode(TFT_BL, OUTPUT);
@@ -55,6 +56,9 @@ extern "C" void display_init()
             frame_line_pixels = frame_width;
         }
         frame_y = (gfx->height() - NES_SCREEN_HEIGHT) / 2;
+        #ifdef TFT_Y_OFFSET
+        frame_y += TFT_Y_OFFSET;
+        #endif
     }
     else // assume 480x320
     {
@@ -65,6 +69,7 @@ extern "C" void display_init()
         frame_height = h;
         frame_line_pixels = frame_width / 2;
     }
+    log_d("display_init: w=%d, h=%d, x=%d, y=%d, xoff=%d, lpx=%d", frame_width, frame_height, frame_x, frame_y, frame_x_offset, frame_line_pixels);
 }
 
 extern "C" void display_write_frame(const uint8_t *data[])
@@ -72,6 +77,7 @@ extern "C" void display_write_frame(const uint8_t *data[])
     gfx->startWrite();
     if (w < 480)
     {
+        log_v("writeAddrWindow: x=%d, y=%d, w=%d, h=%d", frame_x, frame_y, frame_width, frame_height);
         gfx->writeAddrWindow(frame_x, frame_y, frame_width, frame_height);
         for (int32_t i = 0; i < NES_SCREEN_HEIGHT; i++)
         {
