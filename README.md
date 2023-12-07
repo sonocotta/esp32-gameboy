@@ -10,7 +10,7 @@ The DIY Gameboy project is an exciting venture for those who have a passion for 
 
 ## Where to buy
 
-You can support my work by buying this kit at [Tindie]([https://www.tindie.com/products/sonocotta/stm8s003-development-board/](https://www.tindie.com/products/sonocotta/play-esp-diy-kit/))
+You can support my work by buying this kit at [Tindie](https://www.tindie.com/products/sonocotta/play-esp-diy-kit/))
 
 ## Full Gameboy Experience
 
