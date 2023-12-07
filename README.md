@@ -8,6 +8,9 @@ The DIY Gameboy project is an exciting venture for those who have a passion for 
 |---|---|
 | ![DSC_0699](https://github.com/sonocotta/esp32-gameboy/assets/5459747/8d480f3c-c626-48c5-b544-145d3ffeadaa) | ![DSC_0727](https://github.com/sonocotta/esp32-gameboy/assets/5459747/a753b13a-2198-4797-8a6a-3fa6c7b00cd0)
 
+## Where to buy
+
+You can support my work by buying this kit at [Tindie]([https://www.tindie.com/products/sonocotta/stm8s003-development-board/](https://www.tindie.com/products/sonocotta/play-esp-diy-kit/))
 
 ## Full Gameboy Experience
 
