@@ -232,7 +232,7 @@
         Arduino_DataBus *bus = new Arduino_ESP32SPI(TFT_DC /* DC */, TFT_CS /* CS */, SCK, MOSI, MISO); \
         Arduino_ILI9341 *gfx = new Arduino_ILI9341(bus, TFT_RES /* RST */, TFT_ROTATION /* rotation */, false /* IPS */);
 
-#elif defined(HW_PLAY_ESP_ESP32C3)
+#elif defined(HW_PLAY_ESP_ESP32C3_A)
 
     #ifdef FS_SPIFFS
     /* FatFS */
@@ -282,7 +282,7 @@
         Arduino_DataBus *bus = new Arduino_ESP32SPI(TFT_DC /* DC */, TFT_CS /* CS */, TFT_SCK, TFT_MOSI, TFT_MISO); \
         Arduino_ST7789 *gfx = new Arduino_ST7789(bus, TFT_RES /* RST */, TFT_ROTATION /* rotation */, true /* IPS */, TFT_WIDTH, TFT_HEIGHT);
 
-#elif defined(HW_PLAY_ESP_ESP32S2)
+#elif defined(HW_PLAY_ESP_ESP32S2_A) || defined(HW_PLAY_ESP_ESP32S2_B)
 
     #ifdef FS_SPIFFS
     /* FatFS */
@@ -309,8 +309,15 @@
     #define PCF8574_MAP_LEFT    P1
     #define PCF8574_MAP_RIGHT   P0
 
+#if defined(HW_PLAY_ESP_ESP32S2_A)
     #define PCF8574_MAP_START   P5
     #define PCF8574_MAP_SELECT  P4
+#endif
+#if defined(HW_PLAY_ESP_ESP32S2_B)
+    #define PCF8574_MAP_START   P4
+    #define PCF8574_MAP_SELECT  P5
+#endif
+
     #define PCF8574_MAP_B       P6
     #define PCF8574_MAP_A       P7
 
