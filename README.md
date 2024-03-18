@@ -3,6 +3,8 @@
 ![Open Source Hardware](/images/open-source-hardware-logo.png)
 ![Open Source Software](/images/open-source-software-logo.png)
 
+![image](https://github.com/sonocotta/esp32-gameboy/assets/5459747/960ed8a2-596b-4170-a6ab-32de7047de08)
+
 The DIY Gameboy project is an exciting venture for those who have a passion for retro gaming and enjoy hands-on electronics projects. In this project, participants will have the opportunity to construct their own handheld gaming console inspired by the iconic Gameboy.
 
 I started work on the ESP32 Gameboy as a drop-in replacement for the Gameboy case, which is very easy to find on online markets for more than a reasonable price. This project turned out to be not as simple as I expected, spanning across a few board revisions and many issues found and fixed (and a few remain), so at some point, I decided to make a mini version that would use the same code running on the similar but much-simplified hardware, in a shape of DIY kit (I am sure everything gets better when it is a DIY).
