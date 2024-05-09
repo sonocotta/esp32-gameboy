@@ -44,7 +44,7 @@ This simple kit can be assembled in 5 to 30 minutes (depending on one's skills) 
 
 ## Where to buy
 
-You can support my work by buying this kit at [Tindie](https://www.tindie.com/products/sonocotta/play-esp-diy-kit/))
+You can support my work by buying this kit at [Tindie](https://www.tindie.com/products/sonocotta/play-esp-diy-kit/) or [Elecrow](https://www.elecrow.com/play-esp-diy-kit.html)
 
 # Full Gameboy Experience
 
@@ -78,7 +78,7 @@ This is an ESP32-based drop-in replacement for the Gameboy console.
 |---|---|---|---|
 | ESP32 | 21 | 22 | 35 | 
 
-### Other Perihperal
+### Other Peripheral
 
 |  | RGB LED | SDCARD CS | AUDIO OUT | CHRG IN | STBY IN | BAT IN |
 |---|---|---|---|---|---|---|
@@ -86,7 +86,7 @@ This is an ESP32-based drop-in replacement for the Gameboy console.
 
 ## Software
 
-In the [software](/firmware/esp32-nes-emulator) section NES firmware is provided. It is based on the [arduino-nofrendo](https://github.com/moononournation/arduino-nofrendo) implementation. Hardware difinition added for both Play ESP and ESP32 Gameboy.
+In the [software](/firmware/esp32-nes-emulator) section NES firmware is provided. It is based on the [arduino-nofrendo](https://github.com/moononournation/arduino-nofrendo) implementation. Hardware definition added for both Play ESP and ESP32 Gameboy.
 
 ### Platformio IDE
  
