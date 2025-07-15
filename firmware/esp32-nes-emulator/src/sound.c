@@ -158,8 +158,8 @@ void IRAM_ATTR audioSampleTimer()
 int osd_init_sound()
 {
 	audio_frame = NOFRENDO_MALLOC(4 * DEFAULT_FRAGSIZE);
-	log_d("setup LEDC: pin=%d, ch=%d, f=%d, bit=%d", HW_AUDIO_BUZZER_PIN, 2, 100000, 8);
-	ledcSetup(2, 100000, HW_AUDIO_RESOLUTION_BITS);
+	log_d("setup LEDC: pin=%d, ch=%d, f=%d, bit=%d", HW_AUDIO_BUZZER_PIN, 2, HW_AUDIO_RESOLUTION_FREQ, 8);
+	ledcSetup(2, HW_AUDIO_RESOLUTION_FREQ, HW_AUDIO_RESOLUTION_BITS);
 	ledcAttachPin(HW_AUDIO_BUZZER_PIN, 2);
 	ledcWrite(2, 0);
 

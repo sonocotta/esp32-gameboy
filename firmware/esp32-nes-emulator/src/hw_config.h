@@ -72,6 +72,7 @@
 
     /* buzzer audio */
     #define HW_AUDIO_BUZZER
+    #define HW_AUDIO_RESOLUTION_FREQ 100000
     #define HW_AUDIO_RESOLUTION_BITS 8
     #define HW_AUDIO_BUZZER_PIN 4
     #define HW_AUDIO_SAMPLERATE 22050 // nofrendo minimum sample rate
@@ -245,6 +246,7 @@
 
     /* buzzer audio */
     #define HW_AUDIO_BUZZER
+    #define HW_AUDIO_RESOLUTION_FREQ 5000
     #define HW_AUDIO_RESOLUTION_BITS 8
     #define HW_AUDIO_BUZZER_PIN 5
     #define HW_AUDIO_SAMPLERATE 22050 // nofrendo minimum sample rate
@@ -295,6 +297,7 @@
 
     /* buzzer audio */
     #define HW_AUDIO_BUZZER
+    #define HW_AUDIO_RESOLUTION_FREQ 5000
     #define HW_AUDIO_RESOLUTION_BITS 8
     #define HW_AUDIO_BUZZER_PIN 12
     #define HW_AUDIO_SAMPLERATE 22050 // nofrendo minimum sample rate
@@ -303,6 +306,8 @@
     #define HW_CONTROLLER_I2C_PCF8574
     #define HW_CONTROLLER_I2C_PCF8574_INT_PIN 16
     #define HW_CONTROLLER_I2C_PCF8574_ADDR 0x20
+    #define HW_CONTROLLER_I2C_PIN_SDA 33
+    #define HW_CONTROLLER_I2C_PIN_SCL 35
 
     #define PCF8574_MAP_UP      P2 
     #define PCF8574_MAP_DOWN    P3

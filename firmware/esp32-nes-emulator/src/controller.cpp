@@ -281,6 +281,12 @@ extern "C" uint32_t controller_read_input()
   
   extern "C" void controller_init()
   {
+    #if defined(HW_CONTROLLER_I2C_PIN_SDA) && defined(HW_CONTROLLER_I2C_PIN_SCL)
+    Wire.begin(HW_CONTROLLER_I2C_PIN_SDA, HW_CONTROLLER_I2C_PIN_SCL);
+    #else
+    Wire.begin();
+    #endif 
+  
     pcf8574.pinMode(P0, INPUT_PULLUP);
     pcf8574.pinMode(P1, INPUT_PULLUP);
     pcf8574.pinMode(P2, INPUT_PULLUP);
